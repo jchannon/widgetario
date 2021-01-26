@@ -1,20 +1,20 @@
-using Jaeger;
-using Jaeger.Reporters;
-using Jaeger.Samplers;
-using Jaeger.Senders.Thrift;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using OpenTracing;
-using OpenTracing.Util;
-using Prometheus;
-using Widgetario.Web.Services;
-
 namespace Widgetario.Web
 {
+    using Carter;
+    using Jaeger;
+    using Jaeger.Reporters;
+    using Jaeger.Samplers;
+    using Jaeger.Senders.Thrift;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+    using OpenTracing;
+    using OpenTracing.Util;
+    using Widgetario.Web.Services;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,7 +26,7 @@ namespace Widgetario.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddCarter();
             services.AddScoped<ProductService>();
             services.AddScoped<StockService>();
 
@@ -41,7 +41,7 @@ namespace Widgetario.Web
                         .WithLoggerFactory(loggerFactory)
                         .WithSender(new UdpSender(Configuration["Tracing:Target"], 6831, 0))
                         .Build();
-                    
+
                     var tracer = new Tracer.Builder("Widgetario.Web")
                         .WithLoggerFactory(loggerFactory)
                         .WithSampler(sampler)
@@ -59,7 +59,6 @@ namespace Widgetario.Web
             }
         }
 
-
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -71,19 +70,8 @@ namespace Widgetario.Web
                 app.UseExceptionHandler("/Error");
             }
 
-            app.UseStaticFiles();
-            app.UseRouting(); 
-
-            app.UseMetricServer();
-            app.UseHttpMetrics();  
-
-            app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseRouting();
+            app.UseEndpoints(builder => builder.MapCarter());
         }
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Widgetario.ProductApi.Entities
+﻿namespace Widgetario.ProductApi.Model
 {
     public class Product
     {

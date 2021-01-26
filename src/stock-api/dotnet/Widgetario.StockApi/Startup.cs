@@ -1,22 +1,22 @@
-using EasyCaching.Core;
-using Jaeger;
-using Jaeger.Reporters;
-using Jaeger.Samplers;
-using Jaeger.Senders.Thrift;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using OpenTracing;
-using OpenTracing.Util;
-using Widgetario.StockApi.Caching;
-using Widgetario.StockApi.Entities;
-
 namespace Widgetario.StockApi
 {
+    using Carter;
+    using EasyCaching.Core;
+    using Jaeger;
+    using Jaeger.Reporters;
+    using Jaeger.Samplers;
+    using Jaeger.Senders.Thrift;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+    using OpenTracing;
+    using OpenTracing.Util;
+    using Widgetario.StockApi.Caching;
+    using Widgetario.StockApi.Model;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -28,12 +28,9 @@ namespace Widgetario.StockApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddCarter();
 
-            services.AddDbContext<StockContext>(options =>
-                     options.UseNpgsql(Configuration.GetConnectionString("StockDb"), postgresOptions => postgresOptions.EnableRetryOnFailure())
-                            .UseSnakeCaseNamingConvention(),
-                     ServiceLifetime.Scoped);
+            services.AddTransient<StockRepository>();
 
             if (Configuration.GetValue<bool>("Tracing:Enabled"))
             {
@@ -65,10 +62,7 @@ namespace Widgetario.StockApi
 
             if (Configuration.GetValue<bool>("Caching:Enabled"))
             {
-                services.AddEasyCaching(options =>
-                {
-                    options.UseInMemory("default");
-                });
+                services.AddEasyCaching(options => { options.UseInMemory("default"); });
             }
             else
             {
@@ -85,12 +79,7 @@ namespace Widgetario.StockApi
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(builder => builder.MapCarter());
         }
     }
 }

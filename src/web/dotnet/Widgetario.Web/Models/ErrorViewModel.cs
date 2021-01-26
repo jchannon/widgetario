@@ -1,5 +1,3 @@
-using System;
-
 namespace Widgetario.Web.Models
 {
     public class ErrorViewModel

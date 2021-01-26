@@ -1,20 +1,20 @@
-using Jaeger;
-using Jaeger.Reporters;
-using Jaeger.Samplers;
-using Jaeger.Senders.Thrift;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using OpenTracing;
-using OpenTracing.Util;
-using Widgetario.ProductApi.Entities;
-
 namespace Widgetario.ProductApi
 {
+    using Carter;
+    using Jaeger;
+    using Jaeger.Reporters;
+    using Jaeger.Samplers;
+    using Jaeger.Senders.Thrift;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Logging;
+    using OpenTracing;
+    using OpenTracing.Util;
+    using Widgetario.ProductApi.Model;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -26,12 +26,9 @@ namespace Widgetario.ProductApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddCarter();
 
-            services.AddDbContext<ProductContext>(options =>
-                     options.UseNpgsql(Configuration.GetConnectionString("ProductsDb"), postgresOptions => postgresOptions.EnableRetryOnFailure())
-                            .UseSnakeCaseNamingConvention(),
-                     ServiceLifetime.Scoped);
+            services.AddTransient<ProductsRepository>();
 
             if (Configuration.GetValue<bool>("Tracing:Enabled"))
             {
@@ -71,12 +68,7 @@ namespace Widgetario.ProductApi
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(builder => builder.MapCarter());
         }
     }
 }

@@ -1,11 +1,10 @@
-﻿using EasyCaching.Core;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Widgetario.StockApi.Caching
+﻿namespace Widgetario.StockApi.Caching
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using EasyCaching.Core;
+
     public class NoopCachingProvider : IEasyCachingProvider
     {
         public bool IsDistributedCache => throw new NotImplementedException();

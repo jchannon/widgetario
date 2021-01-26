@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-
-namespace Widgetario.Web.Models
+﻿namespace Widgetario.Web.Models
 {
+    using System.Collections.Generic;
+
     public class ProductViewModel
     {
         public IEnumerable<Product> Products { get; set; }

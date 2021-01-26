@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="RIDER_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$/../../..">
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/../../products-api/dotnet/Widgetario.ProductApi/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../products-api/dotnet/Widgetario.ProductApi/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../stock-api/dotnet/Widgetario.StockApi/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../stock-api/dotnet/Widgetario.StockApi/obj" />
+      <excludeFolder url="file://$MODULE_DIR$/../../web/dotnet/Widgetario.Web/bin" />
+      <excludeFolder url="file://$MODULE_DIR$/../../web/dotnet/Widgetario.Web/obj" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
