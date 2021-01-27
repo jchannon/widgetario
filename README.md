@@ -5,8 +5,9 @@
 When running an ASP.NET Core application that makes any IO calls it's handy to trace what is happening.  In this codebase, tracing is enabled and the ASP.NET Core app makes IO calls to two different
 APIs to retrieve data.  In the past we have had to wire up correlation ids and causation ids manually with HttpClient but thanks to the work done inside the .NET Core platform we no longer have to worry 
 about this.  What's more we have tools that can use these enhancements and visualize these calls and allow us to see how long and where these calls take place inside our application.  It can also show any 
-logging you may have in the app and also distinguish HTTP calls going out and HTTP calls coming in across boundaries.  If you use Entity Framework you also get OpenTelemetry for free that shows the timings
-of your SQL queries and the SQL statement that was executed.  For this example, EF is not used and work to get OpenTelemetry into Npgsql is ongoing.
+logging you may have in the app and also distinguish HTTP calls going out and HTTP calls coming in across boundaries.  If you use SqlClient you also get OpenTelemetry for free that shows the timings
+of your SQL queries and the SQL statement that was executed.  For this example, there are two options configured in the Product and Stock appsettings.json, SqlClient and Npgsql, unfortunately work to get 
+OpenTelemetry into Npgsql is ongoing and therefore won't show sql timings.
 
 **Overview**
 ![](./overview.png)
@@ -19,12 +20,24 @@ of your SQL queries and the SQL statement that was executed.  For this example, 
 
 Open a terminal 
 
-Enter the `./src/db` directory and run `docker build -t widgetario/products-db:postgres .`
+Enter the `./src/db` directory 
 
-Run the below docker containers: 
+### Postgres
 
-`docker run -p 5432:5432 -d widgetario/products-db:postgres`
+Run `docker build -t widgetario/products-db:postgres .`
 
+Run `docker run -p 5432:5432 -d widgetario/products-db:postgres`
+
+
+### MSSQL
+
+Run `docker build -t db-demo .`
+
+Run `docker run -p 1433:1433 -d db-demo` (wait 20 secs for database initialization)
+
+### Jaeger
+
+Run
 ```
 docker run -d --name jaeger \                                                                                                                                                                                                          18:55:31
 -e COLLECTOR_ZIPKIN_HTTP_PORT=9411 \
