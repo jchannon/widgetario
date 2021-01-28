@@ -5,11 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Carter" Version="5.2.0"/>
-        <PackageReference Include="Jaeger" Version="0.4.2"/>
-        <PackageReference Include="OpenTracing" Version="0.12.1"/>
-        <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.7.1"/>
-        <PackageReference Include="RestSharp" Version="106.11.7"/>
+        <PackageReference Include="Carter" Version="5.2.0" />
+        <PackageReference Include="Jaeger" Version="0.4.2" />
+        <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.7.1" />
+        <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
     </ItemGroup>
 
 </Project>

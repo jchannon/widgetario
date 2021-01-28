@@ -10,7 +10,6 @@
         <PackageReference Include="Jaeger" Version="0.4.2"/>
         <PackageReference Include="Microsoft.Data.SqlClient" Version="2.1.1"/>
         <PackageReference Include="Npgsql" Version="5.0.1.1"/>
-        <PackageReference Include="OpenTracing" Version="0.12.1"/>
         <PackageReference Include="OpenTracing.Contrib.NetCore" Version="0.7.1"/>
     </ItemGroup>
 

@@ -2,10 +2,10 @@
 
 ## Tracing
 
-When running an ASP.NET Core application that makes any IO calls it's handy to trace what is happening.  In this codebase, tracing is enabled and the ASP.NET Core app makes IO calls to two different
+When running an ASP.NET Core application that makes any IO calls it's handy to trace what is happening.  In this codebase, tracing is enabled and the ASP.NET Core web app makes IO calls to two different
 APIs to retrieve data.  In the past we have had to wire up correlation ids and causation ids manually with HttpClient but thanks to the work done inside the .NET Core platform we no longer have to worry 
 about this.  What's more we have tools that can use these enhancements and visualize these calls and allow us to see how long and where these calls take place inside our application.  It can also show any 
-logging you may have in the app and also distinguish HTTP calls going out and HTTP calls coming in across boundaries.  If you use SqlClient you also get OpenTelemetry for free that shows the timings
+logging you may have in the app (via `ILogger`) and also distinguish HTTP calls going out and HTTP calls coming in across boundaries.  If you use SqlClient you also get OpenTelemetry for free that shows the timings
 of your SQL queries and the SQL statement that was executed.  For this example, there are two options configured in the Product and Stock appsettings.json, SqlClient and Npgsql, unfortunately work to get 
 OpenTelemetry into Npgsql is ongoing and therefore won't show sql timings.
 
@@ -15,6 +15,8 @@ OpenTelemetry into Npgsql is ongoing and therefore won't show sql timings.
 **Cross Boundary**
 ![](./inandout.png)
 
+**SQL**
+![](./sql.png)
 
 ## Running
 

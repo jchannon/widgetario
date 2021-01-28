@@ -1,9 +1,10 @@
 ﻿namespace Widgetario.Web.Services
 {
-    using System;
+    using System.Net.Http;
+    using System.Net.Http.Json;
+    using System.Text.Json;
     using System.Threading.Tasks;
     using Microsoft.Extensions.Configuration;
-    using RestSharp;
     using Widgetario.Web.Models;
 
     public class StockService
@@ -20,16 +21,9 @@
 
         public async Task<ProductStock> GetStock(long productId)
         {
-            var client = new RestClient(ApiUrl);
-            var request = new RestRequest($"{productId}");
-            var response = await client.ExecuteGetAsync<ProductStock>(request);
-            if (!response.IsSuccessful)
-            {
-                throw new Exception(
-                    $"Service call failed, status: {response.StatusCode}, message: {response.ErrorMessage}");
-            }
-
-            return response.Data;
+            var httpClient = new HttpClient();
+            return await httpClient.GetFromJsonAsync<ProductStock>($"{ApiUrl}/{productId}",
+                new JsonSerializerOptions(JsonSerializerDefaults.Web));
         }
     }
 }
