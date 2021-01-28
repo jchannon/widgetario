@@ -28,14 +28,14 @@ Enter the `./src/db` directory
 
 Run `docker build -t widgetario/products-db:postgres .`
 
-Run `docker run -p 5432:5432 -d widgetario/products-db:postgres`
+Run `docker run -p 5432:5432 -d --rm widgetario/products-db:postgres`
 
 
 ### MSSQL
 
 Run `docker build -t db-demo .`
 
-Run `docker run -p 1433:1433 -d db-demo` (wait 20 secs for database initialization)
+Run `docker run -p 1433:1433 -d --rm db-demo` (wait 20 secs for database initialization)
 
 ### Jaeger
 
