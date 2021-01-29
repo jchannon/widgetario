@@ -4,13 +4,12 @@ namespace Widgetario.Web.Modules
     using Carter;
     using Carter.Response;
     using Microsoft.Extensions.Logging;
-    using OpenTracing;
     using Widgetario.Web.Models;
     using Widgetario.Web.Services;
 
     public class HomeModule : CarterModule
     {
-        public HomeModule(ProductService productsService, StockService stockService, ITracer tracer,
+        public HomeModule(ProductService productsService, StockService stockService,
             ILogger<HomeModule> logger)
         {
             this.Get("/", async (req, res) =>
@@ -18,16 +17,18 @@ namespace Widgetario.Web.Modules
                 var stopwatch = Stopwatch.StartNew();
                 logger.LogDebug("Loading products & stock");
                 var model = new ProductViewModel();
-                using (var loadScope = tracer.BuildSpan("api-load").StartActive())
+                var activitySource = new ActivitySource("api-load-source");
+
+                using (activitySource.StartActivity("api-load"))
                 {
-                    using (var productLoadScope = tracer.BuildSpan("product-api-load").StartActive())
+                    using (activitySource.StartActivity("product-api-load"))
                     {
                         model.Products = await productsService.GetProducts();
                     }
 
                     foreach (var product in model.Products)
                     {
-                        using (var stockLoadScope = tracer.BuildSpan("stock-api-load").StartActive())
+                        using (activitySource.StartActivity("stock-api-load"))
                         {
                             var productStock = await stockService.GetStock(product.Id);
                             product.Stock = productStock.Stock;
